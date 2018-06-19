@@ -32,9 +32,11 @@ public class MainStringPatternMatcher {
     // it just for simple test
     public static void main(String[] args) {
 
-        int howMatchIsMatchesInGivenString = giveMeNumberOfMatches();
-        System.out.println("We have " + howMatchIsMatchesInGivenString + " matches and permutes in " +
-                           givenStringToMatchExamine + ".");
+        MainStringPatternMatcher mainStringPatternMatcher = new MainStringPatternMatcher("abca", "abcabcabcbacbaabcb");
+        int howMatchIsMatchesInGivenString = mainStringPatternMatcher.giveMeNumberOfMatches();
+        System.out.println(
+                "We have " + howMatchIsMatchesInGivenString + " matches and permutes in " + givenStringToMatchExamine +
+                ".");
     }
 
     private static int giveMeNumberOfMatches() {
@@ -74,10 +76,11 @@ public class MainStringPatternMatcher {
         for (char ch : givenSubStringCharArForExamine) {
             if (!givenPatternMap.containsKey(ch)) {
                 return false;
-            } else if (givenPatternMap.get(ch)!=testSubArrMap.get(ch)){
+            } else if (givenPatternMap.get(ch) != testSubArrMap.get(ch)) {
                 return false;
             }
-        } return result;
+        }
+        return result;
     }
 
     private static void fulfillMapFromString(HashMap<Character, Integer> givenPatternMap, char[] givenPatternArray) {
