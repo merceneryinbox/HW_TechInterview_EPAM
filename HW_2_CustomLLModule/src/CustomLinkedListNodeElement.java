@@ -4,7 +4,11 @@ public class CustomLinkedListNodeElement<T extends Object> {
     private T nextNeighbour;
     private int body;
 
-    public CustomLinkedListNodeElement(T previousNeighbour, CustomLinkedListNodeElement tail, T nextNeighbour, int body, CustomLinkedListNodeElement head) {
+    public CustomLinkedListNodeElement(int body) {
+        this.body = body;
+    }
+
+    public CustomLinkedListNodeElement(T previousNeighbour, T nextNeighbour, int body) {
         this.previousNeighbour = previousNeighbour;
         this.nextNeighbour = nextNeighbour;
         this.body = body;
