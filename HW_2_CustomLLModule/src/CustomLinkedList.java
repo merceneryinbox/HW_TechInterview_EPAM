@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CustomLinkedList implements Collection<CustomLinkedListNodeElement> {
-    private Set<CustomLinkedListNodeElement> internalSetOfElements = new HashSet<>(128);
     private volatile AtomicInteger sizeOfRealExistingElementsInList = new AtomicInteger(0);
     //    private volatile int commonSizeOfList;
 //    private volatile int nextVacantBacket;
@@ -21,7 +20,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
 
     }
 
-    public CustomLinkedList setTail(CustomLinkedListNodeElement tail) {
+    private CustomLinkedList setTail(CustomLinkedListNodeElement tail) {
         if (tail.getNextNeighbour().equals(null)) {
             this.tail = tail;
         }
@@ -55,13 +54,13 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         boolean result = false;
         try {
             if ((poinedElement != null) && contains(poinedElement)) {
-                this.internalSetOfElements.add(addingAfterElement);
                 CustomLinkedListNodeElement
                         nextFromPointed =
                         (CustomLinkedListNodeElement) poinedElement.getNextNeighbour();
                 poinedElement.setNextNeighbour(addingAfterElement);
                 nextFromPointed.setPreviousNeighbour(addingAfterElement);
             }
+            this.sizeOfRealExistingElementsInList.incrementAndGet();
             result = true;
         } catch (Exception e) {
             return result;
@@ -80,6 +79,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
                 poinedElement.setNextNeighbour(addingBeforeElement);
                 previouseFromPointed.setNextNeighbour(addingBeforeElement);
             }
+            this.sizeOfRealExistingElementsInList.incrementAndGet();
             result = true;
         } catch (Exception e) {
             return result;
@@ -90,9 +90,12 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
     public boolean add(CustomLinkedListNodeElement addingNodeElement) {
         boolean result = false;
         try {
-            tail.setNextNeighbour(addingNodeElement);
-            addingNodeElement.setPreviousNeighbour(tail).setNextNeighbour(null);
+            CustomLinkedListNodeElement tempTail = this.getTail();
+            this.getTail().setNextNeighbour(addingNodeElement);
+            addingNodeElement.setPreviousNeighbour(tempTail).setNextNeighbour(null);
             this.setTail(addingNodeElement);
+            this.sizeOfRealExistingElementsInList.incrementAndGet();
+            result = true;
         } catch (Exception e) {
             return result;
         }
@@ -115,16 +118,15 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         try {
             CustomLinkedListNodeElement wantedElement = (CustomLinkedListNodeElement) anotherElement;
             if (anotherElement != null) {
-                result = ifPresentRecursiveApproach(wantedElement, this.getHead());
+                result = isPresentRecursiveApproach(wantedElement, this.getHead());
             }
-            result = true;
         } catch (Exception ignore) {
             return result;
         }
         return result;
     }
 
-    private boolean ifPresentRecursiveApproach(CustomLinkedListNodeElement wantedElement,
+    private boolean isPresentRecursiveApproach(CustomLinkedListNodeElement wantedElement,
                                                CustomLinkedListNodeElement tempHead) {
         boolean result = false;
         if (wantedElement == null) {
@@ -138,7 +140,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
                     result = true;
                     break;
                 } else {
-                    ifPresentRecursiveApproach(wantedElement, nextNeighbour);
+                    isPresentRecursiveApproach(wantedElement, nextNeighbour);
                 }
             } while (tempHead.getNextNeighbour() != null);
         } catch (Exception ignore) {
@@ -194,6 +196,5 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
 
     @Override
     public void clear() {
-
     }
 }
