@@ -4,34 +4,49 @@ public class CustomLinkedListNodeElement<T extends Object> {
     private T nextNeighbour;
     private int body;
 
-    public CustomLinkedListNodeElement(int body) {
+    public CustomLinkedListNodeElement() {
+        this.body = 0;
+        this.previousNeighbour = null;
+        this.nextNeighbour = null;
+
+    }
+
+    CustomLinkedListNodeElement(int body) {
         this.body = body;
+        this.previousNeighbour = null;
+        this.nextNeighbour = null;
     }
 
     public CustomLinkedListNodeElement(T previousNeighbour, T nextNeighbour, int body) {
+        this.body = body;
         this.previousNeighbour = previousNeighbour;
         this.nextNeighbour = nextNeighbour;
-        this.body = body;
     }
 
-    public T getPreviousNeighbour() {
+    T getPreviousNeighbour() {
         return previousNeighbour;
     }
 
-    public void setPreviousNeighbour(T previousNeighbour) {
+    CustomLinkedListNodeElement setPreviousNeighbour(T previousNeighbour) {
         this.previousNeighbour = previousNeighbour;
+        return this;
     }
 
-    public T getNextNeighbour() {
+    T getNextNeighbour() {
         return nextNeighbour;
     }
 
-    public void setNextNeighbour(T nextNeighbour) {
+    CustomLinkedListNodeElement setNextNeighbour(T nextNeighbour) {
         this.nextNeighbour = nextNeighbour;
+        return this;
     }
 
-    public int getBody() {
+    private int getBody() {
         return body;
+    }
+
+    public boolean lookForEqualFromNextNeighbour(CustomLinkedListNodeElement wantedNode) {
+        return this.getNextNeighbour().equals(wantedNode);
     }
 
     public void killMyNeighbours() {
