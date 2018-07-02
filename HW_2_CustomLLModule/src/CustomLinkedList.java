@@ -20,81 +20,105 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
 
     }
 
-    private CustomLinkedList setTail(CustomLinkedListNodeElement tail) {
-        if (tail.getNextNeighbour().equals(null)) {
-            this.tail = tail;
+    private synchronized CustomLinkedList setTail(CustomLinkedListNodeElement tailCandidate) {
+        if (tailCandidate != null) {
+            CustomLinkedListNodeElement realTail = this.getTail();
+            realTail.setNextNeighbour(tailCandidate);
+            tailCandidate.setPreviousNeighbour(realTail);
+            tailCandidate.setNextNeighbour(null);
         }
         return this;
     }
 
-    //    }
-    public CustomLinkedListNodeElement getTail() {
-        return tail;
-    }
-
-    //        this.nextVacantBacketIndex = nextVacantBacketIndex;
-
-    public int getSizeOfRealExistingElementsInList() {
-        return sizeOfRealExistingElementsInList.get();
-    }
-
-    public CustomLinkedListNodeElement getHead() {
-        return head;
-    }
-
-    private CustomLinkedList setHead(CustomLinkedListNodeElement head) {
-        if (head.getPreviousNeighbour().equals(null)) {
-            this.head = head;
+    private synchronized CustomLinkedList setHead(CustomLinkedListNodeElement headCandidate) {
+        if (headCandidate != null) {
+            headCandidate.setPreviousNeighbour(null);
+            CustomLinkedListNodeElement realHead = this.head;
+            headCandidate.setNextNeighbour(realHead);
+            realHead.setPreviousNeighbour(headCandidate);
+            this.head = headCandidate;
         }
         return this;
     }
 
-    public boolean addAfterPointed(CustomLinkedListNodeElement addingAfterElement,
-                                   CustomLinkedListNodeElement poinedElement) {
+    public synchronized CustomLinkedListNodeElement getTail() {
+        return this.tail;
+    }
+
+    public synchronized CustomLinkedListNodeElement getHead() {
+        return this.head;
+    }
+
+    public synchronized boolean addAfterPointed(CustomLinkedListNodeElement addingAfterElement,
+                                                CustomLinkedListNodeElement pointedElement) {
         boolean result = false;
-        try {
-            if ((poinedElement != null) && contains(poinedElement)) {
-                CustomLinkedListNodeElement
-                        nextFromPointed =
-                        (CustomLinkedListNodeElement) poinedElement.getNextNeighbour();
-                poinedElement.setNextNeighbour(addingAfterElement);
-                nextFromPointed.setPreviousNeighbour(addingAfterElement);
+        if (this.contains(pointedElement)) {
+            CustomLinkedListNodeElement findedPointed = this.findPointed(pointedElement);
+            try {
+                if (!findedPointed.isTail()) { // before tail
+                    CustomLinkedListNodeElement
+                            nextFromPointed =
+                            (CustomLinkedListNodeElement) pointedElement.getNextNeighbour();
+                    pointedElement.setNextNeighbour(addingAfterElement); // set inserting element as next(after) for
+                    // pointed
+                    addingAfterElement.setPreviousNeighbour(pointedElement); // set pointed
+                    // element as
+                    // previous for inserting
+
+                    nextFromPointed.setPreviousNeighbour(addingAfterElement);//set inserting as previous for element
+                    // that
+                    // stands after pointed
+                    addingAfterElement.setNextNeighbour(nextFromPointed);// set next after pointed as next for inserting
+                    result = true;
+                } else if (pointedElement.isTail()) {
+                    this.setTail(addingAfterElement);
+                    result = true;
+                }
+                this.sizeOfRealExistingElementsInList.incrementAndGet();
+                result = true;
+            } catch (Exception e) {
+                return result;
             }
-            this.sizeOfRealExistingElementsInList.incrementAndGet();
-            result = true;
-        } catch (Exception e) {
-            return result;
         }
         return result;
     }
 
-    public boolean addBeforePointed(CustomLinkedListNodeElement addingBeforeElement,
-                                    CustomLinkedListNodeElement poinedElement) {
+    public synchronized boolean addBeforePointed(CustomLinkedListNodeElement addingBeforeElement,
+                                                 CustomLinkedListNodeElement pointedElement) {
         boolean result = false;
-        try {
-            if ((poinedElement != null) && contains(poinedElement)) {
-                CustomLinkedListNodeElement
-                        previouseFromPointed =
-                        (CustomLinkedListNodeElement) poinedElement.getNextNeighbour();
-                poinedElement.setNextNeighbour(addingBeforeElement);
-                previouseFromPointed.setNextNeighbour(addingBeforeElement);
+        CustomLinkedListNodeElement pointedFinded = findPointed(pointedElement);
+
+        if (pointedFinded != null) {
+            try {
+                if (!pointedElement.isHead()) { // if not head
+                    CustomLinkedListNodeElement
+                            previouseFromPointed =
+                            (CustomLinkedListNodeElement) pointedFinded.getPreviousNeighbour();
+                    pointedFinded.setPreviousNeighbour(addingBeforeElement);
+                    previouseFromPointed.setNextNeighbour(addingBeforeElement);
+                    addingBeforeElement.setNextNeighbour(pointedFinded);
+                    addingBeforeElement.setPreviousNeighbour(previouseFromPointed);
+                } else if (pointedFinded.isHead()) {
+                    this.setHead(addingBeforeElement);
+                }
+                this.sizeOfRealExistingElementsInList.incrementAndGet();
+                result = true;
+            } catch (Exception e) {
+                return result;
             }
-            this.sizeOfRealExistingElementsInList.incrementAndGet();
-            result = true;
-        } catch (Exception e) {
-            return result;
         }
         return result;
     }
 
-    public boolean add(CustomLinkedListNodeElement addingNodeElement) {
+    public synchronized boolean add(CustomLinkedListNodeElement addingNodeElement) {
         boolean result = false;
         try {
             CustomLinkedListNodeElement tempTail = this.getTail();
             this.getTail().setNextNeighbour(addingNodeElement);
-            addingNodeElement.setPreviousNeighbour(tempTail).setNextNeighbour(null);
             this.setTail(addingNodeElement);
             this.sizeOfRealExistingElementsInList.incrementAndGet();
+            addingNodeElement.setPreviousNeighbour(tempTail);
+            addingNodeElement.setPreviousNeighbour(tempTail).setNextNeighbour(null);
             result = true;
         } catch (Exception e) {
             return result;
@@ -102,51 +126,39 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         return result;
     }
 
+    private synchronized CustomLinkedListNodeElement findPointed(CustomLinkedListNodeElement pointedElement) {
+        CustomLinkedListNodeElement result = null;
+        if (pointedElement != null) {
+            do {// берём голову и проверяем на равенство, если она не равна тогда берём её следующего соседа и проверяем
+                // его на равенство, если нет берём его соседасоседа... - while
+                CustomLinkedListNodeElement
+                        nextNeighbour =
+                        (CustomLinkedListNodeElement) pointedElement.getNextNeighbour();
+                if (pointedElement.equals(nextNeighbour)) {
+                    result = nextNeighbour;
+                    break;
+                } else {
+                    findPointed(nextNeighbour);
+                }
+            } while (pointedElement.getNextNeighbour() != null);
+        }
+        return result;
+    }
+
     @Override
-    public int size() {
+    public synchronized int size() {
         return sizeOfRealExistingElementsInList.get();
     }
 
     @Override
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return sizeOfRealExistingElementsInList.get() == 0;
     }
 
     @Override
-    public boolean contains(Object anotherElement) {
-        boolean result = false;
-        try {
-            CustomLinkedListNodeElement wantedElement = (CustomLinkedListNodeElement) anotherElement;
-            if (anotherElement != null) {
-                result = isPresentRecursiveApproach(wantedElement, this.getHead());
-            }
-        } catch (Exception ignore) {
-            return result;
-        }
-        return result;
-    }
+    public synchronized boolean contains(Object anotherElement) {
+        return this.findPointed((CustomLinkedListNodeElement) anotherElement) == null;
 
-    private boolean isPresentRecursiveApproach(CustomLinkedListNodeElement wantedElement,
-                                               CustomLinkedListNodeElement tempHead) {
-        boolean result = false;
-        if (wantedElement == null) {
-            return result;
-        }
-        try {
-            do {// берём голову и проверяем на равенство, если она не равна тогда берём её следующего соседа и проверяем
-                // его на равенство, если нет берём его соседасоседа... - while
-                CustomLinkedListNodeElement nextNeighbour = (CustomLinkedListNodeElement) tempHead.getNextNeighbour();
-                if (wantedElement.equals(nextNeighbour)) {
-                    result = true;
-                    break;
-                } else {
-                    isPresentRecursiveApproach(wantedElement, nextNeighbour);
-                }
-            } while (tempHead.getNextNeighbour() != null);
-        } catch (Exception ignore) {
-            return result;
-        }
-        return result;
     }
 
     @Override
@@ -164,14 +176,43 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         return null;
     }
 
-    private boolean addElementIntoTail(CustomLinkedListNodeElement addingNodeElement) {
-        boolean result = false;
-        return result;
-    }
-
     @Override
-    public boolean remove(Object otherObject) {
-        return false;
+    public synchronized boolean remove(Object otherObject) {
+        boolean result = false;
+        CustomLinkedListNodeElement tmpOtherObject = (CustomLinkedListNodeElement) otherObject;
+        try {
+            if (this.contains(tmpOtherObject)) {
+                if (((tmpOtherObject.isTail() == false) && (tmpOtherObject.isHead() == false))) {
+                    CustomLinkedListNodeElement tempDeletingElement = this.findPointed(tmpOtherObject);
+                    CustomLinkedListNodeElement
+                            previousFromPointed =
+                            (CustomLinkedListNodeElement) tempDeletingElement.getPreviousNeighbour();
+                    CustomLinkedListNodeElement
+                            nextFromPointed =
+                            (CustomLinkedListNodeElement) tempDeletingElement.getNextNeighbour();
+                    previousFromPointed.setNextNeighbour(nextFromPointed);
+                    nextFromPointed.setPreviousNeighbour(previousFromPointed);
+                    result = true;
+                } else if (tmpOtherObject.isHead()) {
+                    CustomLinkedListNodeElement
+                            nextOfhead =
+                            (CustomLinkedListNodeElement) tmpOtherObject.getNextNeighbour();
+                    this.setHead(nextOfhead);
+                    tmpOtherObject.killMyNeighbours(); // flipping edges
+                    result = true;
+                } else if (tmpOtherObject.isTail()) {
+                    CustomLinkedListNodeElement
+                            previousOfTail =
+                            (CustomLinkedListNodeElement) tmpOtherObject.getPreviousNeighbour();
+                    this.setTail(previousOfTail);
+                    tmpOtherObject.killMyNeighbours(); // flipping edges
+                    result = true;
+                }
+            }
+        } catch (Exception ignore) {
+            return result;
+        }
+        return result;
     }
 
     @Override
@@ -195,6 +236,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
     }
 
     @Override
-    public void clear() {
+    public synchronized void clear() {
+        this.setTail(null).setHead(null).sizeOfRealExistingElementsInList = new AtomicInteger(0);
     }
 }

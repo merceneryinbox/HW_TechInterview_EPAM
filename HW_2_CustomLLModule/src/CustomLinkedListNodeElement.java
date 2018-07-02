@@ -75,4 +75,12 @@ public class CustomLinkedListNodeElement<T extends Object> {
     public String toString() {
         return super.toString() + " Its Custom Linked List class with double linked queue Body is = " + this.getBody();
     }
+
+    public boolean isTail() {
+        return this.getNextNeighbour() == null;
+    }
+
+    public boolean isHead() {
+        return this.getPreviousNeighbour() == null;
+    }
 }
