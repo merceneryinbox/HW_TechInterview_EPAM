@@ -114,10 +114,9 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         boolean result = false;
         try {
             CustomLinkedListNodeElement tempTail = this.getTail();
-            this.getTail().setNextNeighbour(addingNodeElement);
+            tempTail.setNextNeighbour(addingNodeElement);
             this.setTail(addingNodeElement);
             this.sizeOfRealExistingElementsInList.incrementAndGet();
-            addingNodeElement.setPreviousNeighbour(tempTail);
             addingNodeElement.setPreviousNeighbour(tempTail).setNextNeighbour(null);
             result = true;
         } catch (Exception e) {
@@ -208,6 +207,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
                     tmpOtherObject.killMyNeighbours(); // flipping edges
                     result = true;
                 }
+                this.sizeOfRealExistingElementsInList.decrementAndGet();
             }
         } catch (Exception ignore) {
             return result;
