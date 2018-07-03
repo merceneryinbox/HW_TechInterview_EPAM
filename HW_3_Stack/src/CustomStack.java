@@ -16,10 +16,16 @@ public class CustomStack<T> {
     public CustomLinkedListNodeElement<T> pop() {
         CustomLinkedListNodeElement popEl = customLinkedList.getHead();
         CustomLinkedListNodeElement secondInQueue = (CustomLinkedListNodeElement) popEl.getNextNeighbour();
-        customLinkedList
+        customLinkedList.setHead(secondInQueue);
         popEl.killMyNeighbours();
-
-
         return popEl;
+    }
+
+    public int size() {
+        return customLinkedList.size();
+    }
+
+    public boolean isEmpty() {
+        return customLinkedList.isEmpty();
     }
 }
