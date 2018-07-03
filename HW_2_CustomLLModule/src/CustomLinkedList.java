@@ -20,7 +20,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
 
     }
 
-    private CustomLinkedList setTail(CustomLinkedListNodeElement tailCandidate) {
+    public CustomLinkedList setTail(CustomLinkedListNodeElement tailCandidate) {
         if (tailCandidate != null) {
             CustomLinkedListNodeElement realTail = this.getTail();
             realTail.setNextNeighbour(tailCandidate);
@@ -30,7 +30,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         return this;
     }
 
-    private CustomLinkedList setHead(CustomLinkedListNodeElement headCandidate) {
+    public CustomLinkedList setHead(CustomLinkedListNodeElement headCandidate) {
         if (headCandidate != null) {
             headCandidate.setPreviousNeighbour(null);
             CustomLinkedListNodeElement realHead = this.head;

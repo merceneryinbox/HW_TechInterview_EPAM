@@ -2,22 +2,22 @@ public class CustomLinkedListNodeElement<T extends Object> {
 
     private T previousNeighbour;
     private T nextNeighbour;
-    private int body;
+    private T body;
 
-    public CustomLinkedListNodeElement() {
-        this.body = 0;
+    public <T> CustomLinkedListNodeElement() {
+        this.body = null;
         this.previousNeighbour = null;
         this.nextNeighbour = null;
 
     }
 
-    CustomLinkedListNodeElement(int body) {
+    CustomLinkedListNodeElement(T body) {
         this.body = body;
         this.previousNeighbour = null;
         this.nextNeighbour = null;
     }
 
-    public CustomLinkedListNodeElement(T previousNeighbour, T nextNeighbour, int body) {
+    public CustomLinkedListNodeElement(T previousNeighbour, T nextNeighbour, T body) {
         this.body = body;
         this.previousNeighbour = previousNeighbour;
         this.nextNeighbour = nextNeighbour;
@@ -41,7 +41,7 @@ public class CustomLinkedListNodeElement<T extends Object> {
         return this;
     }
 
-    private int getBody() {
+    private T getBody() {
         return body;
     }
 
@@ -56,7 +56,7 @@ public class CustomLinkedListNodeElement<T extends Object> {
 
     @Override
     public int hashCode() {
-        return getBody() + super.hashCode() * 31 + (int) (Math.random() + 1) * Integer.MAX_VALUE % 2;
+        return getBody().hashCode() + super.hashCode() * 31 + (int) (Math.random() + 1) * Integer.MAX_VALUE % 2;
     }
 
     @Override
