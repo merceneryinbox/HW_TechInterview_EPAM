@@ -20,7 +20,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
 
     }
 
-    private synchronized CustomLinkedList setTail(CustomLinkedListNodeElement tailCandidate) {
+    private CustomLinkedList setTail(CustomLinkedListNodeElement tailCandidate) {
         if (tailCandidate != null) {
             CustomLinkedListNodeElement realTail = this.getTail();
             realTail.setNextNeighbour(tailCandidate);
@@ -30,7 +30,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         return this;
     }
 
-    private synchronized CustomLinkedList setHead(CustomLinkedListNodeElement headCandidate) {
+    private CustomLinkedList setHead(CustomLinkedListNodeElement headCandidate) {
         if (headCandidate != null) {
             headCandidate.setPreviousNeighbour(null);
             CustomLinkedListNodeElement realHead = this.head;
@@ -41,16 +41,16 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         return this;
     }
 
-    public synchronized CustomLinkedListNodeElement getTail() {
+    public CustomLinkedListNodeElement getTail() {
         return this.tail;
     }
 
-    public synchronized CustomLinkedListNodeElement getHead() {
+    public CustomLinkedListNodeElement getHead() {
         return this.head;
     }
 
-    public synchronized boolean addAfterPointed(CustomLinkedListNodeElement addingAfterElement,
-                                                CustomLinkedListNodeElement pointedElement) {
+    public boolean addAfterPointed(CustomLinkedListNodeElement addingAfterElement,
+                                   CustomLinkedListNodeElement pointedElement) {
         boolean result = false;
         if (this.contains(pointedElement)) {
             CustomLinkedListNodeElement findedPointed = this.findPointed(pointedElement);
@@ -83,8 +83,8 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         return result;
     }
 
-    public synchronized boolean addBeforePointed(CustomLinkedListNodeElement addingBeforeElement,
-                                                 CustomLinkedListNodeElement pointedElement) {
+    public boolean addBeforePointed(CustomLinkedListNodeElement addingBeforeElement,
+                                    CustomLinkedListNodeElement pointedElement) {
         boolean result = false;
         CustomLinkedListNodeElement pointedFinded = findPointed(pointedElement);
 
@@ -110,7 +110,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         return result;
     }
 
-    public synchronized boolean add(CustomLinkedListNodeElement addingNodeElement) {
+    public boolean add(CustomLinkedListNodeElement addingNodeElement) {
         boolean result = false;
         try {
             CustomLinkedListNodeElement tempTail = this.getTail();
@@ -125,7 +125,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         return result;
     }
 
-    private synchronized CustomLinkedListNodeElement findPointed(CustomLinkedListNodeElement pointedElement) {
+    private CustomLinkedListNodeElement findPointed(CustomLinkedListNodeElement pointedElement) {
         CustomLinkedListNodeElement result = null;
         if (pointedElement != null) {
             do {// берём голову и проверяем на равенство, если она не равна тогда берём её следующего соседа и проверяем
@@ -145,17 +145,17 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
     }
 
     @Override
-    public synchronized int size() {
+    public int size() {
         return sizeOfRealExistingElementsInList.get();
     }
 
     @Override
-    public synchronized boolean isEmpty() {
+    public boolean isEmpty() {
         return sizeOfRealExistingElementsInList.get() == 0;
     }
 
     @Override
-    public synchronized boolean contains(Object anotherElement) {
+    public boolean contains(Object anotherElement) {
         return this.findPointed((CustomLinkedListNodeElement) anotherElement) == null;
 
     }
@@ -236,7 +236,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
     }
 
     @Override
-    public synchronized void clear() {
+    public void clear() {
         this.setTail(null).setHead(null).sizeOfRealExistingElementsInList = new AtomicInteger(0);
     }
 }
