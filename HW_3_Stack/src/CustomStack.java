@@ -1,13 +1,13 @@
 public class CustomStack<T> {
     private static volatile CustomLinkedList customLinkedList = new CustomLinkedList();
-    private CustomLinkedListNodeElement tmpNode = null;
+    private CustomLinkedListNodeElement<T> tmpNode;
     //push, pop,  size, isEmpty O(1)
 
     public CustomStack() {
     }
 
     public CustomStack<T> push(T insertingElement) {
-        tmpNode = new CustomLinkedListNodeElement(insertingElement);
+        tmpNode = new CustomLinkedListNodeElement<>(insertingElement);
         CustomLinkedListNodeElement head = customLinkedList.getHead();
         customLinkedList.addBeforePointed(tmpNode, head);
         return this;
