@@ -1,8 +1,7 @@
-import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
 
 public class CustomParallelInThePlaceMergeSort<T extends Comparable> {
-    private T[] array;
+    private final T[] array;
 
     public CustomParallelInThePlaceMergeSort(T[] array) {
         this.array = array;
