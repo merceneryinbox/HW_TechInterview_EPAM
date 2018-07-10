@@ -65,9 +65,9 @@ public class CustomLinkedListNodeElement<T extends Object> {
             return false;
         } else {
             CustomLinkedListNodeElement tempCustom = (CustomLinkedListNodeElement) otherObject;
-            return this.getPreviousNeighbour().equals(tempCustom.getPreviousNeighbour())
-                    && this.getNextNeighbour().equals(tempCustom.getNextNeighbour())
-                    && this.getBody() == tempCustom.getBody();
+            return this.getPreviousNeighbour().equals(tempCustom.getPreviousNeighbour()) &&
+                   this.getNextNeighbour().equals(tempCustom.getNextNeighbour()) &&
+                   this.getBody() == tempCustom.getBody();
         }
     }
 
