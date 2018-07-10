@@ -40,6 +40,13 @@ public class CustomParallelInThePlaceMergeSort<T extends Comparable> {
                     swap(i, minPoint);
                     elMin = (T) array[i];
                     minPoint = i;
+                    for (int j = i; j > lo; j--) {
+                        if (array[j - 1].compareTo(array[j]) > 0) {
+                            T tmp2 = (T) array[j - 1];
+                            array[j - 1] = array[j];
+                            array[j] = (T) tmp2;
+                        }
+                    }
                 }
             }
         }
