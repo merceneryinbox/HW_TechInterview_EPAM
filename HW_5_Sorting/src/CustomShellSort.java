@@ -23,8 +23,8 @@ public class CustomShellSort {
     }
 
     private static void printArray(int[] ints) {
-        for (int i = 0; i < ints.length; i++) {
-            System.out.println(ints[i]);
+        for (int anInt : ints) {
+            System.out.println(anInt);
         }
     }
 
@@ -45,12 +45,8 @@ public class CustomShellSort {
     }
 
     private void shiftTo(int minElPointer, int i, int h) {
-
-    }
-
-    private void swap(int j, int i) {
-        int tmp = array[j];
-        array[j] = array[i];
-        array[i] = tmp;
+        for (int j = i; j >= minElPointer; j = j - h) {
+            array[j] = array[j - h];
+        }
     }
 }
