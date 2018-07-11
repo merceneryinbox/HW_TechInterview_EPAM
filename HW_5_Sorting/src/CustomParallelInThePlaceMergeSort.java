@@ -7,7 +7,7 @@ public class CustomParallelInThePlaceMergeSort<T extends Comparable> {
         this.array = array;
     }
 
-    class InnerFJPAction<T> extends RecursiveAction {
+    class InnerFJPAction extends RecursiveAction {
         int lo;
         int hi;
         int middle;
