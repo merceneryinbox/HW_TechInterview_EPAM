@@ -16,11 +16,9 @@ public class CustomInsertionSort {
             if (minEl > array[i]) {
                 minEl = array[i];
                 shiftArray(minElPointer, i);
-                minElPointer = i;
                 array[i] = minEl;
             }
         }
-
         return this.array;
     }
 
