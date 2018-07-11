@@ -7,7 +7,7 @@ public class CustomShellSort {
     public CustomShellSort(int[] array) {
         this.array = array;
         this.minEl = array[minElPointer];
-        h=array.length/5;
+        h = array.length / 3;
     }
 
     // принцип - полученный массив разбиваю на равные части , за исключением последнего разбиения, которое может быть
@@ -33,20 +33,19 @@ public class CustomShellSort {
     }
 
     private int[] shellSortMePlease() {
-        for (int i = h; i < array.length && h >= 1; i = i + h) {
-            if (h == 1) {
-                return array;
+        while (h >= 1) {
+            for (int i = h; i < array.length && h >= 1; i = i + h) {
+                if (minEl > array[i]) {
+                    minEl = array[i];
+                    shiftTo(minElPointer, i, h);
+                    array[minElPointer] = minEl;
+                    minElPointer++;
+                }
             }
-            if (minEl > array[i]) {
-                minEl = array[i];
-                shiftTo(minElPointer, i, h);
-                array[minElPointer] = minEl;
-            }
+            h = h / 2;
         }
-        h = h / 2;
-        return shellSortMePlease();
+        return array;
     }
-
     private void shiftTo(int minElPointer, int i, int h) {
         for (int j = i; j > minElPointer; j = j - h) {
             array[j] = array[j - h];

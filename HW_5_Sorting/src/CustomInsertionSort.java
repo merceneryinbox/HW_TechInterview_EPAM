@@ -17,6 +17,7 @@ public class CustomInsertionSort {
                 minEl = array[i];
                 shiftArray(minElPointer, i);
                 array[i] = minEl;
+                minElPointer++;
             }
         }
         return this.array;
