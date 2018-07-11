@@ -45,7 +45,7 @@ public class CustomShellSort {
     }
 
     private void shiftTo(int minElPointer, int i, int h) {
-        for (int j = i; j >= minElPointer; j = j - h) {
+        for (int j = i; j > minElPointer; j = j - h) {
             array[j] = array[j - h];
         }
     }

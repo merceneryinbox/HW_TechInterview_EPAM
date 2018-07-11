@@ -23,7 +23,7 @@ public class CustomInsertionSort {
     }
 
     private void shiftArray(int minElPointer, int j) {
-        for (int i = j; i >= minElPointer; i--) {
+        for (int i = j; i > minElPointer; i--) {
             array[i] = array[i - 1];
         }
     }

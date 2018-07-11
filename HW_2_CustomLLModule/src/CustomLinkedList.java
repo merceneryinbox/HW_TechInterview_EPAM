@@ -1,10 +1,8 @@
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CustomLinkedList implements Collection<CustomLinkedListNodeElement> {
+public class CustomLinkedList<T> implements Collection<CustomLinkedListNodeElement> {
     private volatile AtomicInteger sizeOfRealExistingElementsInList = new AtomicInteger(0);
     //    private volatile int commonSizeOfList;
 //    private volatile int nextVacantBacket;
@@ -20,7 +18,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
 
     }
 
-    public CustomLinkedList setTail(CustomLinkedListNodeElement tailCandidate) {
+    public CustomLinkedList<T> setTail(CustomLinkedListNodeElement tailCandidate) {
         if (tailCandidate != null) {
             CustomLinkedListNodeElement realTail = this.getTail();
             realTail.setNextNeighbour(tailCandidate);
@@ -30,7 +28,7 @@ public class CustomLinkedList implements Collection<CustomLinkedListNodeElement>
         return this;
     }
 
-    public CustomLinkedList setHead(CustomLinkedListNodeElement headCandidate) {
+    public CustomLinkedList<T> setHead(CustomLinkedListNodeElement headCandidate) {
         if (headCandidate != null) {
             headCandidate.setPreviousNeighbour(null);
             CustomLinkedListNodeElement realHead = this.head;

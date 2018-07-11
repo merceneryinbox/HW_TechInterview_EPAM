@@ -1,5 +1,5 @@
 public class CustomStackBasedOnCustomLinkedList<T> {
-    private static volatile CustomLinkedList customLinkedList = new CustomLinkedList();
+    private volatile CustomLinkedList<T> customLinkedList = new CustomLinkedList<T>();
     private CustomLinkedListNodeElement<T> tmpNode;
     //push, pop,  size, isEmpty O(1)
 
