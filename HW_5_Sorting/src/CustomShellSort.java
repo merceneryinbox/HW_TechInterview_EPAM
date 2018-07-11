@@ -2,10 +2,12 @@ public class CustomShellSort {
     private final int[] array;
     private int minEl;
     private int minElPointer = 0;
+    private int h;
 
     public CustomShellSort(int[] array) {
         this.array = array;
         this.minEl = array[minElPointer];
+        h=array.length/5;
     }
 
     // принцип - полученный массив разбиваю на равные части , за исключением последнего разбиения, которое может быть
@@ -13,11 +15,13 @@ public class CustomShellSort {
     // сортировку вставками , после этого разбиваю массив на пропорционально большие участки и повторяю, в последней
     // итерации отправляю полный массив в сортировку вставками.
     public static void main(String[] args) {
-        int razmer = (int) ((Math.random() + 1) * 10000);
+        int razmer = 20;
         int[] array = new int[razmer];
         for (int i = 0; i < razmer; i++) {
             array[i] = (int) (Math.random() * 100);
         }
+        printArray(array);
+        System.out.println();
         CustomShellSort customShellSort = new CustomShellSort(array);
         printArray(customShellSort.shellSortMePlease());
     }
@@ -29,7 +33,6 @@ public class CustomShellSort {
     }
 
     private int[] shellSortMePlease() {
-        int h = 20;
         for (int i = h; i < array.length && h >= 1; i = i + h) {
             if (h == 1) {
                 return array;
@@ -39,9 +42,9 @@ public class CustomShellSort {
                 shiftTo(minElPointer, i, h);
                 array[minElPointer] = minEl;
             }
-            h = h / 2;
         }
-        return array;
+        h = h / 2;
+        return shellSortMePlease();
     }
 
     private void shiftTo(int minElPointer, int i, int h) {
