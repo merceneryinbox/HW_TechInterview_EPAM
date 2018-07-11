@@ -34,18 +34,19 @@ public class CustomShellSort {
 
     private int[] shellSortMePlease() {
         while (h >= 1) {
-            for (int i = h; i < array.length && h >= 1; i = i + h) {
+            for (int i = minElPointer + h; i < array.length && h >= 1; i = i + h) {
                 if (minEl > array[i]) {
                     minEl = array[i];
                     shiftTo(minElPointer, i, h);
                     array[minElPointer] = minEl;
-                    minElPointer++;
                 }
             }
+            minElPointer++;
             h = h / 2;
         }
         return array;
     }
+
     private void shiftTo(int minElPointer, int i, int h) {
         for (int j = i; j > minElPointer; j = j - h) {
             array[j] = array[j - h];

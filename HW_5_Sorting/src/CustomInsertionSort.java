@@ -12,19 +12,21 @@ public class CustomInsertionSort {
 
     public int[] sortMeInsertion() {
         minEl = array[minElPointer];
-        for (int i = 1; i < this.array.length; i++) {
-            if (minEl > array[i]) {
-                minEl = array[i];
-                shiftArray(minElPointer, i);
-                array[i] = minEl;
-                minElPointer++;
+        while (minElPointer<=array.length) {
+            for (int i = 1; i < this.array.length; i++) {
+                if (minEl > array[i]) {
+                    minEl = array[i];
+                    shiftArray(minElPointer, i);
+                    array[minElPointer] = minEl;
+                }
             }
+            minElPointer++;
         }
         return this.array;
     }
 
-    private void shiftArray(int minElPointer, int j) {
-        for (int i = j; i > minElPointer; i--) {
+    private void shiftArray(int from, int to) {
+        for (int i = to; i > from; i--) {
             array[i] = array[i - 1];
         }
     }
