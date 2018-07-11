@@ -1,5 +1,6 @@
 public class CustomShellSort {
     private final int[] array;
+
     public CustomShellSort(int[] array) {
         this.array = array;
     }
@@ -25,7 +26,28 @@ public class CustomShellSort {
     }
 
     private int[] shellSortMePlease() {
+        int h = 20;
+        for (int i = h; i < array.length && h >= 1; i = i + h) {
+            if (h == 1) {
+                break;
+            }
+            if (array[i - h] > array[i]) {
+                swap(i, i - h);
+                for (int j = i - h; j > 0; j = j - h) {
+                    if (array[j - h] > array[j]) {
+                        swap(j, j - h);
+                    }
 
-        return new int[0];
+                }
+            }
+            h = h / 2;
+        }
+        return array;
+    }
+
+    private void swap(int j, int i) {
+        int tmp = array[j];
+        array[j] = array[i];
+        array[i] = tmp;
     }
 }
