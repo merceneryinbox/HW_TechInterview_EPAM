@@ -12,8 +12,9 @@ public class CustomInsertionSort {
 
     public int[] sortMeInsertion() {
         minEl = array[minElPointer];
-        while (minElPointer<=array.length) {
-            for (int i = 1; i < this.array.length; i++) {
+        while (minElPointer < array.length) {
+            minEl = array[minElPointer];
+            for (int i = minElPointer + 1; i < this.array.length; i++) {
                 if (minEl > array[i]) {
                     minEl = array[i];
                     shiftArray(minElPointer, i);
@@ -33,7 +34,7 @@ public class CustomInsertionSort {
 
 
     public static void main(String[] args) {
-        int[] testAr = new int[]{23, 34, 56, 67, 2, 34, 6, 78, 9, 43, 2, 1};
+        int[] testAr = new int[]{23, 34, 5, 67, 2, 34, 1};
         CustomInsertionSort customInsertionSort = new CustomInsertionSort(testAr);
         printAr(customInsertionSort.sortMeInsertion());
     }
