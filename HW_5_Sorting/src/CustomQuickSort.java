@@ -5,33 +5,64 @@ public class CustomQuickSort {
         this.firstIncomeArray = firstIncomeArray;
     }
 
-    public void quickSort(int[] firstInAr) {
-        if (firstInAr == null || firstInAr.length < 2) {
+    public void quickSort() {
+        if (firstIncomeArray == null || firstIncomeArray.length < 2) {
             return;
         }
         int lo = 0;
-        int hi = firstInAr.length - 1;
-        int pivot = lo;
-        quickSort(lo, pivot);
-        quickSort(pivot + 1, hi);
+        int hi = firstIncomeArray.length - 1;
+        quickSort(lo, hi);
     }
 
     public void quickSort(int leftMargine, int rightMargin) {
 
-        if (rightMargin-leftMargine<2){
+        if (rightMargin - leftMargine < 2) {
             return;
         }
         int newLo = leftMargine;
         int newHi = rightMargin;
         int pivot = leftMargine;
 
+        while (newHi > newLo) {
+            while (firstIncomeArray[pivot] >= firstIncomeArray[newLo] && newLo < rightMargin && newHi > newLo) {
+                newLo++;
+            }
 
-        if (newHi>leftMargine){
-            quickSort(leftMargine,newHi - 1);
+            while (firstIncomeArray[pivot] <= firstIncomeArray[newHi] && newHi > leftMargine && newHi > newLo) {
+                newHi--;
+            }
+            if (newLo < newHi) {
+                swap(newLo, newHi);
+                newLo++;
+                newHi--;
+            }
+
+            if (newHi <= newLo && firstIncomeArray[newHi] < firstIncomeArray[pivot]) {
+                swap(newHi, pivot);
+            }
         }
 
-        if (newLo<rightMargin){
-            quickSort(newHi+1,rightMargin);
+        if (newHi > leftMargine) {
+            quickSort(leftMargine, newHi - 1);
+        }
+
+        if (newLo < rightMargin) {
+            quickSort(newHi + 1, rightMargin);
+        }
+    }
+
+    private void swap(int newLo, int newHi) {
+        int i = firstIncomeArray[newLo];
+        firstIncomeArray[newLo] = firstIncomeArray[newHi];
+        firstIncomeArray[newHi] = i;
+    }
+
+    public static void main(String[] args) {
+        int[] ar = new int[]{12, 22, 2, 222, 21, 2, 0, 3, 32, 12, 6};
+        CustomQuickSort customQuickSort = new CustomQuickSort(ar);
+        customQuickSort.quickSort();
+        for (int i = 0; i < ar.length; i++) {
+            System.out.println(ar[i]);
         }
     }
 }
