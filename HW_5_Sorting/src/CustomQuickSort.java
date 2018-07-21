@@ -8,24 +8,33 @@ public class CustomQuickSort {
 
 
         public void qSort(int lo, int hi) {
+            if (ar==null||hi-lo<2){
+                return;
+            }
+
             int initilLo = lo;
             int initialHi = hi;
             int pivot = lo;
-            while (true) {
-                while (lo < hi && ar[pivot] >= ar[lo]) {
+            while (lo<=hi) {
+                while (ar[pivot] >= ar[lo]) {
+                    if (lo==hi&&hi==initialHi){
+                        swap(pivot,lo);
+                        break;
+                    }
                     lo++;
                 }
-                while (lo < hi && ar[pivot] <= ar[hi]) {
+                while (ar[pivot] <= ar[hi]) {
+                    if (lo==hi && ar[pivot] > ar[hi-1] && lo>=initilLo){
+                        swap(pivot,hi-1);
+                        break;
+                    }
                     hi--;
                 }
                 if (ar[pivot] > ar[hi] && ar[pivot] < ar[lo]) {
                     swap(lo, hi);
                 }
 
-                if (lo>=hi){
-                    if (ar[pivot]<ar[lo]){
-                        swap(pivot,lo);
-                    }
+                if (lo==hi){
                     qSort(initilLo,hi-1);
                     qSort(hi+1,initialHi);
                     break;
