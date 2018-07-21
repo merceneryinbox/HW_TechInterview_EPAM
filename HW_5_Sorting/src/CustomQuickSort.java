@@ -1,68 +1,51 @@
 public class CustomQuickSort {
-    int[] firstIncomeArray;
+    static class QuickSort {
+        final int[] ar;
 
-    public CustomQuickSort(int[] firstIncomeArray) {
-        this.firstIncomeArray = firstIncomeArray;
-    }
-
-    public void quickSort() {
-        if (firstIncomeArray == null || firstIncomeArray.length < 2) {
-            return;
+        QuickSort(int[] ar) {
+            this.ar = ar;
         }
-        int lo = 0;
-        int hi = firstIncomeArray.length - 1;
-        quickSort(lo, hi);
-    }
 
-    public void quickSort(int leftMargine, int rightMargin) {
 
-        if (rightMargin - leftMargine < 2) {
-            return;
-        }
-        int newLo = leftMargine;
-        int newHi = rightMargin;
-        int pivot = leftMargine;
+        public void qSort(int lo, int hi) {
+            int initilLo = lo;
+            int initialHi = hi;
+            int pivot = lo;
+            while (true) {
+                while (lo < hi && ar[pivot] >= ar[lo]) {
+                    lo++;
+                }
+                while (lo < hi && ar[pivot] <= ar[hi]) {
+                    hi--;
+                }
+                if (ar[pivot] > ar[hi] && ar[pivot] < ar[lo]) {
+                    swap(lo, hi);
+                }
 
-        while (newHi > newLo) {
-            while (firstIncomeArray[pivot] >= firstIncomeArray[newLo] && newLo < rightMargin && newHi > newLo) {
-                newLo++;
-            }
-
-            while (firstIncomeArray[pivot] <= firstIncomeArray[newHi] && newHi > leftMargine && newHi > newLo) {
-                newHi--;
-            }
-            if (newLo < newHi) {
-                swap(newLo, newHi);
-                newLo++;
-                newHi--;
-            }
-
-            if (newHi <= newLo && firstIncomeArray[newHi] < firstIncomeArray[pivot]) {
-                swap(newHi, pivot);
+                if (lo>=hi){
+                    if (ar[pivot]<ar[lo]){
+                        swap(pivot,lo);
+                    }
+                    qSort(initilLo,hi-1);
+                    qSort(hi+1,initialHi);
+                    break;
+                }
             }
         }
 
-        if (newHi > leftMargine) {
-            quickSort(leftMargine, newHi - 1);
+        private void swap(int from, int to) {
+            int tmp = ar[from];
+            ar[from] = ar[to];
+            ar[to] = tmp;
         }
-
-        if (newLo < rightMargin) {
-            quickSort(newHi + 1, rightMargin);
-        }
-    }
-
-    private void swap(int newLo, int newHi) {
-        int i = firstIncomeArray[newLo];
-        firstIncomeArray[newLo] = firstIncomeArray[newHi];
-        firstIncomeArray[newHi] = i;
     }
 
     public static void main(String[] args) {
-        int[] ar = new int[]{12, 22, 2, 222, 21, 2, 0, 3, 32, 12, 6};
-        CustomQuickSort customQuickSort = new CustomQuickSort(ar);
-        customQuickSort.quickSort();
-        for (int i = 0; i < ar.length; i++) {
-            System.out.println(ar[i]);
+        int[] ints = {4, 1, 44, 54, 22222, 3, 56, 7, 7, 8, 8, 9, 9, 9, 87, 6, 54};
+        new QuickSort(ints).qSort(0, ints.length - 1);
+        for (int i = 0; i < ints.length; i++) {
+            System.out.println(ints[i]);
         }
+
     }
 }
