@@ -7,20 +7,20 @@ public class CustomQuickSort {
         }
 
         // основная рабочая  часть выполняет разбиение
-        private int partition(int arr[], int initialLeft, int initialRight) {
+        private int partition(int initialLeft, int initialRight) {
             int fromLeftIndex = initialLeft, fromRightIndex = initialRight;
 
             // получаем индекс оси посередине данного массива(для уменьшения стека вызовов)
             int pivotIndex = getPivotIndex(initialLeft, initialRight);
             // получаем сам осевой элемент для сравнения в основном цикле
-            int pivotEl = arr[pivotIndex];
+            int pivotEl = ar[pivotIndex];
 
             // устанавливаем внешнее условие работы цикла - итерация до того момента пока указателли не встретятся
             while (fromLeftIndex <= fromRightIndex) {
 
                 // разбегаемся слева и инкрементируем левый указатель пока элементы в массиве по левому указателю
                 // меньше опорного элемента
-                while (arr[fromLeftIndex] < pivotEl) {
+                while (ar[fromLeftIndex] < pivotEl) {
                     fromLeftIndex++;
                 }
 
@@ -32,7 +32,7 @@ public class CustomQuickSort {
                 // обратном
                 // порядке левый указатель не будет инкрементиться бесконечно, а дойдя до оси отдаст итерацию правому
                 // указателю !
-                while (arr[fromRightIndex] > pivotEl) {
+                while (ar[fromRightIndex] > pivotEl) {
                     fromRightIndex--;
                 }
 
@@ -57,7 +57,7 @@ public class CustomQuickSort {
         }
 
         private int getPivotIndex(int initialLeft, int initialRight) {
-            return (initialRight - initialLeft) / 2;
+            return initialRight/2 + initialLeft/ 2;
         }
 
         private void swap(int from, int to) {
@@ -70,7 +70,7 @@ public class CustomQuickSort {
         // элемент и частично сортирую массив в ходе вычисления местоположения оси
         public void qSort(int left, int right) {
 
-            int index = partition(ar, left, right);
+            int index = partition( left, right);
             if (left < index - 2) {
                 qSort(left, index - 1);
             }
