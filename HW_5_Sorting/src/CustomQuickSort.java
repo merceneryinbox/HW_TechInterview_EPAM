@@ -76,22 +76,22 @@ public class CustomQuickSort {
 
         // внешняя функция управления сортировкой разбивает массив на подмоссивы, получая при этом следующий осевой
         // элемент и частично сортирую массив в ходе вычисления местоположения оси
-        public void qSort(int left, int right) {
+        public void splitRunPartitioning(int left, int right) {
 
             int index = partitionAndPivotCalculator(left, right);
             if (left < index - 2) {
-                qSort(left, index - 1);
+                splitRunPartitioning(left, index - 1);
             }
 
             if (index + 1 < right) {
-                qSort(index, right);
+                splitRunPartitioning(index, right);
             }
         }
     }
 
     public static void main(String[] args) {
         int[] ints = {998, 7, 8, 34, 3, 2, 1, 342, 33, 33, 3, 57, 8, 76};
-        new QuickSort(ints).qSort(0, ints.length - 1);
+        new QuickSort(ints).splitRunPartitioning(0, ints.length - 1);
         for (int i = 0; i < ints.length; i++) {
             System.out.println(ints[i]);
         }
