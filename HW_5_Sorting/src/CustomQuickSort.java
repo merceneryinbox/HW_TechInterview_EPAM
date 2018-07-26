@@ -15,7 +15,7 @@ public class CustomQuickSort {
         }
 
         // основная рабочая  часть выполняет разбиение
-        private int partition(int initialLeft, int initialRight) {
+        private int partitionAndPivotCalculator(int initialLeft, int initialRight) {
             int fromLeftIndex = initialLeft, fromRightIndex = initialRight;
 
             // получаем индекс оси посередине данного массива(для уменьшения стека вызовов)
@@ -78,7 +78,7 @@ public class CustomQuickSort {
         // элемент и частично сортирую массив в ходе вычисления местоположения оси
         public void qSort(int left, int right) {
 
-            int index = partition( left, right);
+            int index = partitionAndPivotCalculator(left, right);
             if (left < index - 2) {
                 qSort(left, index - 1);
             }
