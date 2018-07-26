@@ -65,7 +65,7 @@ public class CustomQuickSort {
         }
 
         private int getPivotIndex(int initialLeft, int initialRight) {
-            return initialRight/2 + initialLeft/ 2;
+            return initialRight / 2 + initialLeft / 2;
         }
 
         private void swap(int from, int to) {
@@ -80,7 +80,7 @@ public class CustomQuickSort {
 
             int index = partitionAndPivotCalculator(left, right);
             if (left < index - 2) {
-                splitRunPartitioning(left, index - 1);
+                splitRunPartitioning(left, index);
             }
 
             if (index + 1 < right) {
