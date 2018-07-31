@@ -46,11 +46,11 @@ public class CustomQuickSort {
 
                 // найдя элемент справа, который не больше (т.е.м.б. равен!) опорного проверяем что индексы не
                 // пробежали мимо друг друга и свопаем правый с левым, таким образом здесь учтён и случай когда
-                // осевой элемент является равным элементу по индексу = lо но не равен hi и случай когда осевой равен
-                // по индексу hi но не равен по индексу lo (например если lo элемент с самого начала оказался больше
+                // осевой элемент является равным элементу по индексу = lо но не равен initialHi и случай когда осевой равен
+                // по индексу initialHi но не равен по индексу initialLo (например если initialLo элемент с самого начала оказался больше
                 // чем опорный, тогда итерация продолжается справа , а справа оказались элементы все больше чем
                 // опорный тогда правый укзатель не будет бежать до левого а дойдя до опорного передаст управление
-                // ниже для замены первого в lo который больше чем опорный для замены их.
+                // ниже для замены первого в initialLo который больше чем опорный для замены их.
 
                 if (fromLeftIndex <= fromRightIndex) {
                     swap(fromLeftIndex, fromRightIndex);
@@ -78,13 +78,13 @@ public class CustomQuickSort {
         // элемент и частично сортирую массив в ходе вычисления местоположения оси
         public void splitRunPartitioning(int left, int right) {
 
-            int index = partitionAndPivotCalculator(left, right);
-            if (left < index - 2) {
-                splitRunPartitioning(left, index);
+            int pivot = partitionAndPivotCalculator(left, right);
+            if (left < pivot - 2) {
+                splitRunPartitioning(left, pivot);
             }
 
-            if (index + 1 < right) {
-                splitRunPartitioning(index, right);
+            if (pivot + 1 < right) {
+                splitRunPartitioning(pivot, right);
             }
         }
     }
