@@ -18,14 +18,17 @@ public class CustomParallelInThePlaceQuickSort<T extends Comparable> extends Rec
     }
 
     public void parallelQsort(){
-        int pivot = new CustomParallelInThePlaceQuickSort(array, initialLo, initialHi).compute();
+        if (initialHi-initialLo < 2){
+            return;
+        }
+        int pivot = new CustomParallelInThePlaceQuickSort<T>(array).compute();
         if (initialHi - initialLo < 7) {
             parallelQsort(initialLo, pivot);
             parallelQsort(pivot,initialHi);
             return;
         }
 
-        parallelQsort(initialLo, pivot - 2);
+        parallelQsort(initialLo, pivot - 1);
         parallelQsort(pivot+1, initialHi);
     }
 
@@ -38,26 +41,28 @@ public class CustomParallelInThePlaceQuickSort<T extends Comparable> extends Rec
         int innerInitialRight=initialHi;
         int pivot = new CustomParallelInThePlaceQuickSort(array, innerInitialLo, innerInitialRight).compute();
 
-        parallelQsort(initialLo, pivot - 1);
-        parallelQsort(pivot+1, initialHi);
+        parallelQsort(innerInitialLo, pivot - 1);
+        parallelQsort(pivot+1, innerInitialRight);
         return;
     }
 
     @Override
     protected Integer compute() {
+        int left = initialLo;
+        int right = initialHi;
         int pivot = initialHi/2 + initialLo/2;
         T pivotEl = array[pivot];
-        while (initialLo <= initialHi) {
-            while (array[initialLo].compareTo(pivotEl) < 0) {
-                initialLo++;
+        while (left <= right) {
+            while (array[left].compareTo(pivotEl) < 0) {
+                left++;
             }
-            while (array[initialHi].compareTo(pivotEl) > 0) {
-                initialHi--;
+            while (array[right].compareTo(pivotEl) > 0) {
+                right--;
             }
-            if (initialLo <= initialHi) {
-                swap(initialLo, initialHi);
-                initialLo++;
-                initialHi--;
+            if (left <= right) {
+                swap(left, right);
+                left++;
+                right--;
             }
         }
         return initialLo;

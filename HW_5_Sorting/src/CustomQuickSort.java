@@ -6,6 +6,10 @@
 // индекс осевого элемента выбирается как деление суммы!! двух переданных индексов пополам для уменьшения количества
 // рекурсивных вызовов методов в худшем случае.
 // средняя и лучшая сложность nLog(n), наихудшая при обратно отсортированном массиве n в квадрате.
+
+/**
+ * NON-RECURSIVE QUICKSORT
+ */
 public class CustomQuickSort {
     static class QuickSort {
         final int[] ar;
@@ -14,52 +18,26 @@ public class CustomQuickSort {
             this.ar = ar;
         }
 
-        // основная рабочая  часть выполняет разбиение
         private int partitionAndPivotCalculator(int initialLeft, int initialRight) {
-            int fromLeftIndex = initialLeft, fromRightIndex = initialRight;
+            int fromLeftIndex = initialLeft;
+            int fromRightIndex = initialRight;
 
-            // получаем индекс оси посередине данного массива(для уменьшения стека вызовов)
             int pivotIndex = getPivotIndex(initialLeft, initialRight);
-            // получаем сам осевой элемент для сравнения в основном цикле
             int pivotEl = ar[pivotIndex];
 
-            // устанавливаем внешнее условие работы цикла - итерация до того момента пока указателли не встретятся
-            while (fromLeftIndex <= fromRightIndex) {
-
-                // разбегаемся слева и инкрементируем левый указатель пока элементы в массиве по левому указателю
-                // меньше опорного элемента
-                while (ar[fromLeftIndex] < pivotEl) {
+            while (fromLeftIndex<=fromRightIndex){
+                while (ar[fromLeftIndex]<ar[pivotIndex]){
                     fromLeftIndex++;
                 }
-
-                // как только попался элемент из массива который не меньше(т.е.м.б. и равен !) из левых
-                // перескакиваем на указатель который бегает справа налево и проверяем что все элементы с правым
-                // указателем больше опорного, а заодно ищем элемент справа, который меньше опорного чтобы свопнуть
-                // его с левым , который больше опорного
-                // (здесь заложена проверка на случай если массив отсортирован в
-                // обратном
-                // порядке левый указатель не будет инкрементиться бесконечно, а дойдя до оси отдаст итерацию правому
-                // указателю !
-                while (ar[fromRightIndex] > pivotEl) {
+                while (ar[fromRightIndex]>ar[pivotIndex]){
                     fromRightIndex--;
                 }
 
-                // найдя элемент справа, который не больше (т.е.м.б. равен!) опорного проверяем что индексы не
-                // пробежали мимо друг друга и свопаем правый с левым, таким образом здесь учтён и случай когда
-                // осевой элемент является равным элементу по индексу = lо но не равен initialHi и случай когда осевой равен
-                // по индексу initialHi но не равен по индексу initialLo (например если initialLo элемент с самого начала оказался больше
-                // чем опорный, тогда итерация продолжается справа , а справа оказались элементы все больше чем
-                // опорный тогда правый укзатель не будет бежать до левого а дойдя до опорного передаст управление
-                // ниже для замены первого в initialLo который больше чем опорный для замены их.
-
-                if (fromLeftIndex <= fromRightIndex) {
-                    swap(fromLeftIndex, fromRightIndex);
+                if (fromLeftIndex<fromRightIndex){
+                    swap(fromLeftIndex,fromRightIndex);
                     fromLeftIndex++;
                     fromRightIndex--;
                 }
-
-                // дальше при любом раскладе итерация продолжается слева если индексы не пересеклись после изменения
-                // в последнем шаге.
             }
             return fromLeftIndex;
         }
@@ -69,28 +47,51 @@ public class CustomQuickSort {
         }
 
         private void swap(int from, int to) {
-            int tmp = ar[from];
-            ar[from] = ar[to];
-            ar[to] = tmp;
+            if (from != to) {
+                int tmp = ar[from];
+                ar[from] = ar[to];
+                ar[to] = tmp;
+            }
         }
 
-        // внешняя функция управления сортировкой разбивает массив на подмоссивы, получая при этом следующий осевой
-        // элемент и частично сортирую массив в ходе вычисления местоположения оси
         public void splitRunPartitioning(int left, int right) {
 
             int pivot = partitionAndPivotCalculator(left, right);
             if (left < pivot - 2) {
-                splitRunPartitioning(left, pivot);
+                splitRunPartitioning(left, pivot -1);
             }
 
-            if (pivot + 1 < right) {
-                splitRunPartitioning(pivot, right);
+            if (pivot + 2 < right) {
+                splitRunPartitioning(pivot + 1, right);
             }
         }
     }
 
     public static void main(String[] args) {
-        int[] ints = {998, 7, 8, 34, 3, 2, 1, 342, 33, 33, 3, 57, 8, 76};
+        int[]
+                ints =
+                {
+                        998,
+                        7,
+                        8,
+                        34,
+                        3,
+                        2,
+                        1,
+                        342,
+                        33,
+                        33,
+                        3,
+                        57,
+                        8,
+                        76,
+                        876,
+                        8,
+                        34,
+                        3,
+                        2,
+                        1
+                };
         new QuickSort(ints).splitRunPartitioning(0, ints.length - 1);
         for (int i = 0; i < ints.length; i++) {
             System.out.println(ints[i]);
